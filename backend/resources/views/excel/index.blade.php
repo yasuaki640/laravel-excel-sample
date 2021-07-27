@@ -21,5 +21,6 @@
         </style>
     </head>
     <body class="antialiased">
+        <h1>Laravel/Excel Sample app</h1>
     </body>
 </html>
