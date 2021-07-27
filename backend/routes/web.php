@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::prefix('excel')->name('excel.')->group(function () {
+    Route::get('', [\App\Http\Controllers\UserController::class, 'showDownloadForm'])->name('download-form');
+});
