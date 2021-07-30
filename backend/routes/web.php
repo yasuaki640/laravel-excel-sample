@@ -19,4 +19,5 @@ Route::get('/', function () {
 
 Route::prefix('excel')->name('excel.')->group(function () {
     Route::get('', [\App\Http\Controllers\UserController::class, 'showDownloadForm'])->name('download-form');
+    Route::get('download', [\App\Http\Controllers\UserController::class, 'showDownloadForm'])->name('download-form');
 });
