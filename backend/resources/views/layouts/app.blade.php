@@ -6,9 +6,6 @@
     <title>Laravel</title>
 </head>
 <body>
-<div id="app">
-    @yield('content')
-</div>
-<script src="{{mix('js/app.js')}}"></script>
+@yield('content')
 </body>
 </html>
