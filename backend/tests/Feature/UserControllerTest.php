@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Exports\UsersExport;
 use App\Http\Controllers\UserController;
+use App\Jobs\NotifyUserOfCompletedExport;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -80,5 +81,9 @@ class UserControllerTest extends TestCase
             function (FromCollection $export) {
                 return $export->collection()->count() === 10;
             });
+
+        Excel::assertQueuedWithChain([
+            new NotifyUserOfCompletedExport($users->first(), UsersExport::FILE_NAME)
+        ]);
     }
 }
