@@ -17,4 +17,15 @@ class UserControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('excel.index');
     }
+
+    /**
+     * @return void
+     */
+    public function test_download()
+    {
+        $response = $this->get(route('excel.download'));
+
+        $response->assertOk();
+        $response->assertDownload('UserController.php');
+    }
 }

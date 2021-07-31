@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * Class UserController
@@ -18,5 +19,13 @@ class UserController extends Controller
     public function showDownloadForm(): View
     {
         return view('excel.index');
+    }
+
+    /**
+     * @return BinaryFileResponse
+     */
+    public function download(): BinaryFileResponse
+    {
+        return response()->download('./app/Http/Controllers/UserController.php');
     }
 }
