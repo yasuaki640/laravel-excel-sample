@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Exports\UsersExport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Maatwebsite\Excel\Facades\Excel;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
@@ -27,9 +28,11 @@ class UserControllerTest extends TestCase
      */
     public function test_download()
     {
+        Excel::fake();
+
         $response = $this->get(route('users.excel.download'));
 
         $response->assertOk();
-        $response->assertDownload(UsersExport::FILE_NAME);
+        Excel::assertDownloaded(UsersExport::FILE_NAME);
     }
 }
