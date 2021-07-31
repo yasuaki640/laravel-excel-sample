@@ -12,7 +12,7 @@ class UserControllerTest extends TestCase
      */
     public function test_showDownloadForm()
     {
-        $response = $this->get(route('excel.download-form'));
+        $response = $this->get(route('users.excel.download-form'));
 
         $response->assertOk();
         $response->assertViewIs('excel.index');
@@ -23,7 +23,7 @@ class UserControllerTest extends TestCase
      */
     public function test_download()
     {
-        $response = $this->get(route('excel.download'));
+        $response = $this->get(route('users.excel.download'));
 
         $response->assertOk();
         $response->assertDownload(UsersExport::FILE_NAME);
