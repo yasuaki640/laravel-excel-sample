@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
  */
 class UserController extends Controller
 {
+
     /**
      * Show download excel files form
      *
@@ -24,10 +25,12 @@ class UserController extends Controller
     }
 
     /**
+     * Download a excel file of users export
+     *
      * @return BinaryFileResponse
      */
     public function download(): BinaryFileResponse
     {
-        return Excel::download(new UsersExport, 'users.xlsx');
+        return Excel::download(new UsersExport, UsersExport::FILE_NAME);
     }
 }

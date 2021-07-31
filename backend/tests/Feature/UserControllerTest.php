@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Exports\UsersExport;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
@@ -26,6 +26,6 @@ class UserControllerTest extends TestCase
         $response = $this->get(route('excel.download'));
 
         $response->assertOk();
-        $response->assertDownload('UserController.php');
+        $response->assertDownload(UsersExport::FILE_NAME);
     }
 }
