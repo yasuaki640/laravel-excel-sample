@@ -40,6 +40,7 @@ class UserControllerTest extends TestCase
         $response = $this->get(route('users.excel.download'));
 
         $response->assertOk();
+        
         Excel::assertDownloaded(UsersExport::FILE_NAME, function (UsersExport $export) {
             return $export->collection()->count() === 10;
         });
