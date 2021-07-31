@@ -1,9 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
 use App\Exports\UsersExport;
+use Exception;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -27,10 +30,19 @@ class UserController extends Controller
     /**
      * Download a excel file of users export
      *
-     * @return BinaryFileResponse
+     * @return BinaryFileResponse|RedirectResponse
+     * @throws Exception
      */
-    public function download(): BinaryFileResponse
+    public function download(): BinaryFileResponse|RedirectResponse
     {
-        return Excel::download(new UsersExport, UsersExport::FILE_NAME);
+        try {
+            return Excel::download(new UsersExport, UsersExport::FILE_NAME);
+
+        } catch (Exception $e) {
+            logger()->error($e);
+            return redirect(route('users.excel.download-form'))
+                ->withErrors($e->getMessage());
+        }
+    }
     }
 }
