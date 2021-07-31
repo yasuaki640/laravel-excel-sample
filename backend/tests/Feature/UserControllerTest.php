@@ -6,6 +6,7 @@ use App\Exports\UsersExport;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Facades\Excel;
 use Storage;
 use Tests\TestCase;
@@ -63,12 +64,21 @@ class UserControllerTest extends TestCase
         Excel::fake();
         Storage::fake(UserController::STORAGE_S3);
 
-        $user = User::factory()->create();
+        $users = User::factory()
+            ->count(10)
+            ->create();
 
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($users->first())
             ->get(route('users.excel.queue'));
 
         $response->assertOk();
         $response->assertViewHas('message');
+
+        Excel::assertQueued(
+            UsersExport::FILE_NAME,
+            UserController::STORAGE_S3,
+            function (FromCollection $export) {
+                return $export->collection()->count() === 10;
+            });
     }
 }
