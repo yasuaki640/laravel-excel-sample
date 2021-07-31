@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsersExport;
 use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
@@ -26,6 +28,6 @@ class UserController extends Controller
      */
     public function download(): BinaryFileResponse
     {
-        return response()->download('./app/Http/Controllers/UserController.php');
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 }

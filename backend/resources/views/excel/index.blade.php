@@ -3,6 +3,6 @@
 @section('content')
     <section>
         <h1>Laravel/Excel Sample app</h1>
-        <button onclick="handleExportButtonClick">Export user models</button>
+        <a href="{{route('excel.download')}}">Export user models</a>
     </section>
 @endsection
