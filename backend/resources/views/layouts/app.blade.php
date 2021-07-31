@@ -15,6 +15,13 @@
         </ul>
     </div>
 @endif
+@if(!empty($message))
+    <div class="info" style="color: green">
+        <ul>
+            <li>{{ $message }}</li>
+        </ul>
+    </div>
+@endif
 @yield('content')
 </body>
 </html>

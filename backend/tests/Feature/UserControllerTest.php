@@ -3,8 +3,11 @@
 namespace Tests\Feature;
 
 use App\Exports\UsersExport;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Maatwebsite\Excel\Facades\Excel;
+use Storage;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
@@ -50,5 +53,22 @@ class UserControllerTest extends TestCase
         $response = $this->get(route('users.excel.download'));
 
         $response->assertSessionHasErrors();
+    }
+
+    /**
+     * @return void
+     */
+    public function test_queue_success()
+    {
+        Excel::fake();
+        Storage::fake(UserController::STORAGE_S3);
+
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->get(route('users.excel.queue'));
+
+        $response->assertOk();
+        $response->assertViewHas('message');
     }
 }
