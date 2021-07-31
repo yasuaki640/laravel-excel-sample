@@ -35,4 +35,20 @@ class UserControllerTest extends TestCase
         $response->assertOk();
         Excel::assertDownloaded(UsersExport::FILE_NAME);
     }
+
+    /**
+     * @return void
+     */
+    public function test_download_fail_download()
+    {
+        Excel::fake();
+
+        // Mock excel facade and make it throw an exception
+        Excel::shouldReceive('download')
+            ->andThrow(new \PhpOffice\PhpSpreadsheet\Exception());
+
+        $response = $this->get(route('users.excel.download'));
+
+        $response->assertSessionHasErrors();
+    }
 }
