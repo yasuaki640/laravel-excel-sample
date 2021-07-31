@@ -3,3 +3,5 @@
 
 # Docker Compose
 .env
+.phpstorm.meta.php
+_ide_helper.php
