@@ -35,10 +35,14 @@ class UserControllerTest extends TestCase
     {
         Excel::fake();
 
+        User::factory()->count(10)->create();
+
         $response = $this->get(route('users.excel.download'));
 
         $response->assertOk();
-        Excel::assertDownloaded(UsersExport::FILE_NAME);
+        Excel::assertDownloaded(UsersExport::FILE_NAME, function (UsersExport $export) {
+            return $export->collection()->count() === 10;
+        });
     }
 
     /**
