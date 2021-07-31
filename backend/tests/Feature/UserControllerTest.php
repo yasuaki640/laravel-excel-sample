@@ -3,10 +3,14 @@
 namespace Tests\Feature;
 
 use App\Exports\UsersExport;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
 {
+
+    use RefreshDatabase;
+
     /**
      * @return void
      */
