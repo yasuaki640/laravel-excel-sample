@@ -79,6 +79,11 @@ class UserController extends Controller
         return \view('excel.index', compact('message'));
     }
 
+    public function showUploadForm(): View
+    {
+        return view('excel.upload');
+    }
+
     /**
      * @return View|RedirectResponse
      */

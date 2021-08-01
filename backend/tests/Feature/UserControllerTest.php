@@ -123,4 +123,15 @@ class UserControllerTest extends TestCase
         $response->assertOk();
         $response->assertViewHas('message');
     }
+
+    /**
+     * @return void
+     */
+    public function test_showUploadForm()
+    {
+        $response = $this->get(route('users.excel.import.upload-form'));
+
+        $response->assertOk();
+        $response->assertViewIs('excel.upload');
+    }
 }
