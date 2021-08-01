@@ -85,7 +85,8 @@ class UserControllerTest extends TestCase
             UserController::STORAGE_S3,
             function (FromCollection $export) {
                 return $export->collection()->count() === 10;
-            });
+            }
+        );
 
         Excel::assertQueuedWithChain([
             new NotifyUserOfCompletedExport($users->first(), UsersExport::FILE_NAME)
