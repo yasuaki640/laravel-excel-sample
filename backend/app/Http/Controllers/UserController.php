@@ -12,7 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use function Matrix\trace;
+use Throwable;
 
 /**
  * Class UserController
@@ -50,6 +50,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Add users export jobs on queue
+     *
+     * @return View|RedirectResponse
+     * @throws Throwable
+     */
     public function queue(): View|RedirectResponse
     {
         try {
@@ -62,7 +68,7 @@ class UserController extends Controller
             ]);
 
             DB::commit();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             DB::rollBack();
             logger()->error($e);
             return redirect(route('users.excel.download-form'))
