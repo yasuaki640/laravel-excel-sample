@@ -45,7 +45,7 @@ class UserController extends Controller
 
         } catch (Exception $e) {
             logger()->error($e);
-            return redirect(route('users.excel.download-form'))
+            return redirect(route('users.excel.export.download-form'))
                 ->withErrors($e->getMessage());
         }
     }
@@ -71,7 +71,7 @@ class UserController extends Controller
         } catch (Throwable $e) {
             DB::rollBack();
             logger()->error($e);
-            return redirect(route('users.excel.download-form'))
+            return redirect(route('users.excel.export.download-form'))
                 ->withErrors($e->getMessage());
         }
 

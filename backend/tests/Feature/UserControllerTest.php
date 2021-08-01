@@ -22,7 +22,7 @@ class UserControllerTest extends TestCase
      */
     public function test_showDownloadForm()
     {
-        $response = $this->get(route('users.excel.download-form'));
+        $response = $this->get(route('users.excel.export.download-form'));
 
         $response->assertOk();
         $response->assertViewIs('excel.index');
@@ -37,7 +37,7 @@ class UserControllerTest extends TestCase
 
         User::factory()->count(10)->create();
 
-        $response = $this->get(route('users.excel.download'));
+        $response = $this->get(route('users.excel.export.download'));
 
         $response->assertOk();
 
@@ -57,10 +57,10 @@ class UserControllerTest extends TestCase
         Excel::shouldReceive('download')
             ->andThrow(new \PhpOffice\PhpSpreadsheet\Exception());
 
-        $response = $this->get(route('users.excel.download'));
+        $response = $this->get(route('users.excel.export.download'));
 
         $response->assertSessionHasErrors();
-        $response->assertRedirect(route('users.excel.download-form'));
+        $response->assertRedirect(route('users.excel.export.download-form'));
     }
 
     /**
@@ -76,7 +76,7 @@ class UserControllerTest extends TestCase
             ->create();
 
         $response = $this->actingAs($users->first())
-            ->get(route('users.excel.queue'));
+            ->get(route('users.excel.export.queue'));
 
         $response->assertOk();
         $response->assertViewHas('message');
@@ -105,9 +105,22 @@ class UserControllerTest extends TestCase
         Excel::shouldReceive('queue')
             ->andThrow(new \Exception());
 
-        $response = $this->get(route('users.excel.queue'));
+        $response = $this->get(route('users.excel.export.queue'));
 
         $response->assertSessionHasErrors();
-        $response->assertRedirect(route('users.excel.download-form'));
+        $response->assertRedirect(route('users.excel.export.download-form'));
     }
+//
+//    /**
+//     * @return void
+//     */
+//    public function test_import_success()
+//    {
+//        Excel::fake();
+//
+//        $response = $this->get(route('users.excel.export.queue'));
+//
+//        $response->assertOk();
+////        $response->assertViewHas('message');
+//    }
 }
