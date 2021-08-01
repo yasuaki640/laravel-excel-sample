@@ -60,8 +60,8 @@ class UserController extends Controller
                     UsersExport::FILE_NAME
                 )
             ]);
-            DB::commit();
 
+            DB::commit();
         } catch (\Throwable $e) {
             DB::rollBack();
             logger()->error($e);
