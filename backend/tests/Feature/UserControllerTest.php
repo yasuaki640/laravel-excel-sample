@@ -92,4 +92,20 @@ class UserControllerTest extends TestCase
             new NotifyUserOfCompletedExport($users->first(), UsersExport::FILE_NAME)
         ]);
     }
+
+    /**
+     * @return void
+     */
+    public function test_queue_fail_queue()
+    {
+        Excel::fake();
+
+        // Mock excel facade and make it throw an exception
+        Excel::shouldReceive('queue')
+            ->andThrow(new \Exception());
+
+        $response = $this->get(route('users.excel.queue'));
+
+        $response->assertSessionHasErrors();
+    }
 }

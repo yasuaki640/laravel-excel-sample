@@ -9,8 +9,10 @@ use App\Models\User;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use function Matrix\trace;
 
 /**
  * Class UserController
@@ -48,14 +50,24 @@ class UserController extends Controller
         }
     }
 
-    public function queue(): View
+    public function queue(): View|RedirectResponse
     {
-        Excel::queue(new UsersExport, UsersExport::FILE_NAME, self::STORAGE_S3)->chain([
-            new NotifyUserOfCompletedExport(
-                request()->user() ?? User::factory()->create(),
-                UsersExport::FILE_NAME
-            )
-        ]);
+        try {
+            DB::beginTransaction();
+            Excel::queue(new UsersExport, UsersExport::FILE_NAME, self::STORAGE_S3)->chain([
+                new NotifyUserOfCompletedExport(
+                    request()->user() ?? User::factory()->create(),
+                    UsersExport::FILE_NAME
+                )
+            ]);
+            DB::commit();
+
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            logger()->error($e);
+            return redirect(route('users.excel.download-form'))
+                ->withErrors($e->getMessage());
+        }
 
         $message = 'Successfully queued an export job';
         return \view('excel.index', compact('message'));
