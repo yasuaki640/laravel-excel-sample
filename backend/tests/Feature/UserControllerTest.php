@@ -60,6 +60,7 @@ class UserControllerTest extends TestCase
         $response = $this->get(route('users.excel.download'));
 
         $response->assertSessionHasErrors();
+        $response->assertRedirect(route('users.excel.download-form'));
     }
 
     /**
@@ -107,5 +108,6 @@ class UserControllerTest extends TestCase
         $response = $this->get(route('users.excel.queue'));
 
         $response->assertSessionHasErrors();
+        $response->assertRedirect(route('users.excel.download-form'));
     }
 }
