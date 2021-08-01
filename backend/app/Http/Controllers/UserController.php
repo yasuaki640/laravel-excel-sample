@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\UsersExport;
 use App\Jobs\NotifyUserOfCompletedExport;
+use App\Models\User;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -50,7 +51,10 @@ class UserController extends Controller
     public function queue(): View
     {
         Excel::queue(new UsersExport, UsersExport::FILE_NAME, self::STORAGE_S3)->chain([
-            new NotifyUserOfCompletedExport(request()->user(), UsersExport::FILE_NAME)
+            new NotifyUserOfCompletedExport(
+                request()->user() ?? User::factory()->make(),
+                UsersExport::FILE_NAME
+            )
         ]);
 
         $message = 'Successfully queued an export job';
