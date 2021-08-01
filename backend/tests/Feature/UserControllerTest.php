@@ -110,17 +110,17 @@ class UserControllerTest extends TestCase
         $response->assertSessionHasErrors();
         $response->assertRedirect(route('users.excel.export.download-form'));
     }
-//
-//    /**
-//     * @return void
-//     */
-//    public function test_import_success()
-//    {
-//        Excel::fake();
-//
-//        $response = $this->get(route('users.excel.export.queue'));
-//
-//        $response->assertOk();
-////        $response->assertViewHas('message');
-//    }
+
+    /**
+     * @return void
+     */
+    public function test_import_success()
+    {
+        Excel::fake();
+
+        $response = $this->get(route('users.excel.import.upload'));
+
+        $response->assertOk();
+        $response->assertViewHas('message');
+    }
 }

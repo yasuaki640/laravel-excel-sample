@@ -78,4 +78,20 @@ class UserController extends Controller
         $message = 'Successfully queued an export job';
         return \view('excel.index', compact('message'));
     }
+
+    /**
+     * @return View|RedirectResponse
+     */
+    public function upload(): View|RedirectResponse
+    {
+        try {
+            $message = 'Successfully uploaded an excel file';
+            return \view('excel.index', compact('message'));
+
+        } catch (Exception $e) {
+            logger()->error($e);
+            return redirect(route('users.excel.export.download-form'))
+                ->withErrors($e->getMessage());
+        }
+    }
 }
