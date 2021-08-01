@@ -52,7 +52,7 @@ class UserController extends Controller
     {
         Excel::queue(new UsersExport, UsersExport::FILE_NAME, self::STORAGE_S3)->chain([
             new NotifyUserOfCompletedExport(
-                request()->user() ?? User::factory()->make(),
+                request()->user() ?? User::factory()->create(),
                 UsersExport::FILE_NAME
             )
         ]);
