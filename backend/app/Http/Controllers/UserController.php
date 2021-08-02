@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Exports\UsersExport;
+use App\Http\Requests\User\UploadPost;
 use App\Jobs\NotifyUserOfCompletedExport;
 use App\Models\User;
 use Exception;
@@ -86,10 +87,10 @@ class UserController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param UploadPost $request
      * @return View|RedirectResponse
      */
-    public function upload(Request $request): View|RedirectResponse
+    public function upload(UploadPost $request): View|RedirectResponse
     {
         try {
             $message = 'Successfully imported an excel file';
