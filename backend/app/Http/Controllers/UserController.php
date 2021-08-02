@@ -9,6 +9,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -85,13 +86,14 @@ class UserController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return View|RedirectResponse
      */
-    public function upload(): View|RedirectResponse
+    public function upload(Request $request): View|RedirectResponse
     {
         try {
-            $message = 'Successfully uploaded an excel file';
-            return \view('excel.index', compact('message'));
+            $message = 'Successfully imported an excel file';
+            return \view('excel.upload', compact('message'));
 
         } catch (Exception $e) {
             logger()->error($e);

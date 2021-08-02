@@ -118,7 +118,7 @@ class UserControllerTest extends TestCase
     {
         Excel::fake();
 
-        $response = $this->get(route('users.excel.import.upload'));
+        $response = $this->post(route('users.excel.import.upload'));
 
         $response->assertOk();
         $response->assertViewHas('message');
