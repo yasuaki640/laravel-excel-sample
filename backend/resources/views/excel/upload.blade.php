@@ -6,7 +6,7 @@
         <div>
             <form
                 action="{{ route('users.excel.import.upload') }}"
-                method="POSt"
+                method="POST"
                 enctype="multipart/form-data"
             >
                 @csrf
