@@ -3,6 +3,7 @@
 namespace Tests\Unit\Requests;
 
 use App\Http\Requests\User\UploadPost;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
@@ -36,7 +37,28 @@ class UpdatePostTest extends TestCase
                     'dummy val'
                 ],
                 false
-            ]
+            ],
+            'fail not acceptable file type' => [
+                [
+                    'users'
+                ],
+                [
+                    'users' => UploadedFile::fake()->image('test.jpg')
+                ],
+                false
+            ],
+            'success' => [
+                [
+                    'users'
+                ],
+                [
+                    'users' => UploadedFile::fake()->create(
+                        name: 'users.xlsx',
+                        mimeType: 'application/vnd.openxmlformats-officedocument.spread'
+                    )
+                ],
+                true
+            ],
         ];
     }
 }

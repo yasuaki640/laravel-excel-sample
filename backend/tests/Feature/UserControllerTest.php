@@ -122,7 +122,7 @@ class UserControllerTest extends TestCase
         $response = $this->post(route('users.excel.import.upload'), [
             'users' => UploadedFile::fake()->create(
                 name: 'users.xlsx',
-                mimeType: 'application/vnd.ms-excel'
+                mimeType: 'application/vnd.openxmlformats-officedocument.spread'
             )
         ]);
 

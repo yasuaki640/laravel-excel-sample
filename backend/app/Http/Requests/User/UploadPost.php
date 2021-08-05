@@ -25,7 +25,11 @@ class UploadPost extends FormRequest
     public function rules(): array
     {
         return [
-            'users' => ['required']
+            'users' => [
+                'required',
+                'file',
+                'mimetypes:application/vnd.openxmlformats-officedocument.spread',
+            ]
         ];
     }
 }
