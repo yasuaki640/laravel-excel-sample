@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Jobs\NotifyUserOfCompletedExport;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Facades\Excel;
 use Storage;
@@ -118,7 +119,12 @@ class UserControllerTest extends TestCase
     {
         Excel::fake();
 
-        $response = $this->post(route('users.excel.import.upload'));
+        $response = $this->post(route('users.excel.import.upload'), [
+            'users' => UploadedFile::fake()->create(
+                name: 'users.xlsx',
+                mimeType: 'application/vnd.ms-excel'
+            )
+        ]);
 
         $response->assertOk();
         $response->assertViewHas('message');
