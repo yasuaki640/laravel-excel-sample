@@ -7,7 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
-class UpdatePostTest extends TestCase
+class UploadPostTest extends TestCase
 {
     /**
      * @param array
