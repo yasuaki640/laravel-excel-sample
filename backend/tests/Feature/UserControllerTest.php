@@ -128,6 +128,7 @@ class UserControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertViewHas('message');
+        Excel::assertImported('users.xlsx');
     }
 
     /**

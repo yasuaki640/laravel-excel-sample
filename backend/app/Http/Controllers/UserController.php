@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\UsersExport;
 use App\Http\Requests\User\UploadPost;
+use App\Imports\UsersImport;
 use App\Jobs\NotifyUserOfCompletedExport;
 use App\Models\User;
 use Exception;
@@ -93,6 +94,7 @@ class UserController extends Controller
     public function upload(UploadPost $request): View|RedirectResponse
     {
         try {
+            Excel::import(new UsersImport, $request->file('users'));
             $message = 'Successfully imported an excel file';
             return \view('excel.upload', compact('message'));
 
