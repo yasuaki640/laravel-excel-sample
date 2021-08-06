@@ -28,7 +28,9 @@ class UploadPost extends FormRequest
             'users' => [
                 'required',
                 'file',
-                'mimetypes:application/vnd.openxmlformats-officedocument.spread',
+                'mimetypes:'
+                . 'application/vnd.openxmlformats-officedocument.spread' . ','
+                . 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             ]
         ];
     }
