@@ -15,7 +15,6 @@ use Illuminate\Notifications\Notifiable;
  * @property string $name
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
- * @property string $d_o_b
  * @property int|null $sex
  * @property string $password
  * @property string|null $remember_token
@@ -51,7 +50,6 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'd_o_b',
         'sex',
         'password',
     ];

@@ -113,23 +113,36 @@ class UserControllerTest extends TestCase
     }
 
     /**
+     * [Note] Do not use Excel::fake() to persist test data to DB
+     *
      * @return void
      */
     public function test_import_success()
     {
-        Excel::fake();
-        Storage::fake();
-
         $response = $this->post(route('users.excel.import.upload'), [
-            'users' => UploadedFile::fake()->create(
-                name: 'users.xlsx',
-                mimeType: 'application/vnd.openxmlformats-officedocument.spread'
+            'users' => new UploadedFile(
+                './tests/Feature/data/import_success.xlsx',
+                'import_success.xlsx',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                null,
+                true
             )
         ]);
 
         $response->assertOk();
         $response->assertViewHas('message');
-        Excel::assertImported('users.xlsx', UserController::STORAGE_S3);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Dr. Keaton Beahan DVM',
+            'email' => 'myrtice.langosh@example.com',
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Amelia Auer DDS',
+            'email' => 'maximillian76@example.com',
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Mariane Satterfield',
+            'email' => 'cassin.brendon@example.net',
+        ]);
     }
 
     /**
