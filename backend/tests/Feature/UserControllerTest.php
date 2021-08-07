@@ -6,6 +6,7 @@ use App\Exports\UsersExport;
 use App\Http\Controllers\UserController;
 use App\Jobs\NotifyUserOfCompletedExport;
 use App\Models\User;
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -110,6 +111,31 @@ class UserControllerTest extends TestCase
 
         $response->assertSessionHasErrors();
         $response->assertRedirect(route('users.excel.export.download-form'));
+    }
+
+    /**
+     * @return void
+     */
+    public function test_import_fail_import()
+    {
+        Excel::fake();
+
+        // Mock excel facade and make it throw an exception
+        Excel::shouldReceive('import')
+            ->andThrow(new Exception());
+
+        $response = $this->post(route('users.excel.import.upload'), [
+            'users' => new UploadedFile(
+                './tests/Feature/data/import_success.xlsx',
+                'import_success.xlsx',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                null,
+                true
+            )
+        ]);
+
+        $response->assertSessionHasErrors();
+        $response->assertRedirect(route('users.excel.import.upload-form'));
     }
 
     /**
