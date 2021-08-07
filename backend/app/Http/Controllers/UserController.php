@@ -94,7 +94,7 @@ class UserController extends Controller
     public function upload(UploadPost $request): View|RedirectResponse
     {
         try {
-            Excel::import(new UsersImport, $request->file('users'));
+            Excel::import(new UsersImport, $request->file('users'), self::STORAGE_S3);
             $message = 'Successfully imported an excel file';
             return \view('excel.upload', compact('message'));
 

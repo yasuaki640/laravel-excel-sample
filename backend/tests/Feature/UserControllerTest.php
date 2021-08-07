@@ -118,6 +118,7 @@ class UserControllerTest extends TestCase
     public function test_import_success()
     {
         Excel::fake();
+        Storage::fake();
 
         $response = $this->post(route('users.excel.import.upload'), [
             'users' => UploadedFile::fake()->create(
@@ -128,7 +129,7 @@ class UserControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertViewHas('message');
-        Excel::assertImported('users.xlsx');
+        Excel::assertImported('users.xlsx', UserController::STORAGE_S3);
     }
 
     /**
