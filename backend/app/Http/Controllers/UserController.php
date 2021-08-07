@@ -83,7 +83,7 @@ class UserController extends Controller
 
     public function showUploadForm(): View
     {
-        return view('excel.upload');
+        return view('excel.import');
     }
 
     /**
@@ -95,7 +95,7 @@ class UserController extends Controller
         try {
             Excel::import(new UsersImport, $request->file('users'));
             $message = 'Successfully imported an excel file';
-            return \view('excel.upload', compact('message'));
+            return \view('excel.import', compact('message'));
 
         } catch (Exception $e) {
             logger()->error($e);

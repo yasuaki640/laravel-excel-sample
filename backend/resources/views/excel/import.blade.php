@@ -14,7 +14,7 @@
                     <input type="file" id="users" name="users">
                 </div>
                 <div>
-                    <input type="submit" value="Upload">
+                    <input type="submit" value="Import">
                 </div>
             </form>
         </div>

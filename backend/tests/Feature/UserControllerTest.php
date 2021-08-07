@@ -188,6 +188,7 @@ class UserControllerTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertViewIs('excel.upload');
+            ->assertViewIs('excel.import');
     }
+
 }
