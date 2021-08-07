@@ -164,18 +164,19 @@ class UserControllerTest extends TestCase
             ->assertOk()
             ->assertViewHas('message');
 
-        $this->assertDatabaseHas('users', [
-            'name' => 'Dr. Keaton Beahan DVM',
-            'email' => 'myrtice.langosh@example.com',
-        ]);
-        $this->assertDatabaseHas('users', [
-            'name' => 'Amelia Auer DDS',
-            'email' => 'maximillian76@example.com',
-        ]);
-        $this->assertDatabaseHas('users', [
-            'name' => 'Mariane Satterfield',
-            'email' => 'cassin.brendon@example.net',
-        ]);
+        $this
+            ->assertDatabaseHas('users', [
+                'name' => 'Dr. Keaton Beahan DVM',
+                'email' => 'myrtice.langosh@example.com',
+            ])
+            ->assertDatabaseHas('users', [
+                'name' => 'Amelia Auer DDS',
+                'email' => 'maximillian76@example.com',
+            ])
+            ->assertDatabaseHas('users', [
+                'name' => 'Mariane Satterfield',
+                'email' => 'cassin.brendon@example.net',
+            ]);
     }
 
     /**
