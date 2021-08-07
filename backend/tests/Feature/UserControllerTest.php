@@ -70,7 +70,7 @@ class UserControllerTest extends TestCase
     /**
      * @return void
      */
-    public function test_queue_success()
+    public function test_queueExport_success()
     {
         Excel::fake();
         Storage::fake(UserController::STORAGE_S3);
@@ -102,7 +102,7 @@ class UserControllerTest extends TestCase
     /**
      * @return void
      */
-    public function test_queue_fail_queue()
+    public function test_queueExport_fail_queue()
     {
         Excel::fake();
 
