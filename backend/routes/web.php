@@ -26,6 +26,7 @@ Route::prefix('users')->name('users.')->group(function () {
         Route::prefix('import')->name('import.')->group(function () {
             Route::get('', [\App\Http\Controllers\UserController::class, 'showUploadForm'])->name('import-form');
             Route::post('upload', [\App\Http\Controllers\UserController::class, 'upload'])->name('upload');
+            Route::post('queue', [\App\Http\Controllers\UserController::class, 'queueImport'])->name('queue');
         });
     });
 });

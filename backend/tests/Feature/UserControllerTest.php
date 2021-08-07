@@ -190,4 +190,14 @@ class UserControllerTest extends TestCase
             ->assertOk()
             ->assertViewIs('excel.import');
     }
+
+    /**
+     * @return void
+     */
+    public function test_queueImport_success()
+    {
+        $response = $this->post(route('users.excel.import.queue'));
+
+        $response->assertOk();
+    }
 }

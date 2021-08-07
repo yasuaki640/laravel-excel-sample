@@ -103,4 +103,20 @@ class UserController extends Controller
                 ->withErrors($e->getMessage());
         }
     }
+
+    /**
+     * @return View|RedirectResponse
+     */
+    public function queueImport(): View|RedirectResponse
+    {
+        try {
+            $message = 'Successfully queued job of import an excel file';
+            return \view('excel.import', compact('message'));
+
+        } catch (Exception $e) {
+            logger()->error($e);
+            return redirect(route('users.excel.import.import-form'))
+                ->withErrors($e->getMessage());
+        }
+    }
 }
