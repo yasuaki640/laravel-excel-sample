@@ -47,18 +47,6 @@ class UploadPostTest extends TestCase
                 ],
                 false
             ],
-            'success ' => [
-                [
-                    'users'
-                ],
-                [
-                    'users' => UploadedFile::fake()->create(
-                        name: 'users.xlsx',
-                        mimeType: 'application/vnd.openxmlformats-officedocument.spread'
-                    )
-                ],
-                true
-            ],
             'success mime type is application/vnd.openxmlformats-officedocument.spread' => [
                 [
                     'users'
