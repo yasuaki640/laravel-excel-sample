@@ -140,7 +140,7 @@ class UserControllerTest extends TestCase
 
         $response
             ->assertSessionHasErrors()
-            ->assertRedirect(route('users.excel.import.upload-form'));
+            ->assertRedirect(route('users.excel.import.import-form'));
     }
 
     /**
@@ -184,11 +184,10 @@ class UserControllerTest extends TestCase
      */
     public function test_showUploadForm()
     {
-        $response = $this->get(route('users.excel.import.upload-form'));
+        $response = $this->get(route('users.excel.import.import-form'));
 
         $response
             ->assertOk()
             ->assertViewIs('excel.import');
     }
-
 }

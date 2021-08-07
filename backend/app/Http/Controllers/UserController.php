@@ -99,7 +99,7 @@ class UserController extends Controller
 
         } catch (Exception $e) {
             logger()->error($e);
-            return redirect(route('users.excel.import.upload-form'))
+            return redirect(route('users.excel.import.import-form'))
                 ->withErrors($e->getMessage());
         }
     }
