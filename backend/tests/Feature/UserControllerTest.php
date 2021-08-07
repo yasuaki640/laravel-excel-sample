@@ -26,8 +26,9 @@ class UserControllerTest extends TestCase
     {
         $response = $this->get(route('users.excel.export.download-form'));
 
-        $response->assertOk();
-        $response->assertViewIs('excel.index');
+        $response
+            ->assertOk()
+            ->assertViewIs('excel.index');
     }
 
     /**
@@ -61,8 +62,9 @@ class UserControllerTest extends TestCase
 
         $response = $this->get(route('users.excel.export.download'));
 
-        $response->assertSessionHasErrors();
-        $response->assertRedirect(route('users.excel.export.download-form'));
+        $response
+            ->assertSessionHasErrors()
+            ->assertRedirect(route('users.excel.export.download-form'));
     }
 
     /**
@@ -80,8 +82,9 @@ class UserControllerTest extends TestCase
         $response = $this->actingAs($users->first())
             ->get(route('users.excel.export.queue'));
 
-        $response->assertOk();
-        $response->assertViewHas('message');
+        $response
+            ->assertOk()
+            ->assertViewHas('message');
 
         Excel::assertQueued(
             UsersExport::FILE_NAME,
@@ -109,8 +112,9 @@ class UserControllerTest extends TestCase
 
         $response = $this->get(route('users.excel.export.queue'));
 
-        $response->assertSessionHasErrors();
-        $response->assertRedirect(route('users.excel.export.download-form'));
+        $response
+            ->assertSessionHasErrors()
+            ->assertRedirect(route('users.excel.export.download-form'));
     }
 
     /**
@@ -134,8 +138,9 @@ class UserControllerTest extends TestCase
             )
         ]);
 
-        $response->assertSessionHasErrors();
-        $response->assertRedirect(route('users.excel.import.upload-form'));
+        $response
+            ->assertSessionHasErrors()
+            ->assertRedirect(route('users.excel.import.upload-form'));
     }
 
     /**
@@ -155,8 +160,10 @@ class UserControllerTest extends TestCase
             )
         ]);
 
-        $response->assertOk();
-        $response->assertViewHas('message');
+        $response
+            ->assertOk()
+            ->assertViewHas('message');
+
         $this->assertDatabaseHas('users', [
             'name' => 'Dr. Keaton Beahan DVM',
             'email' => 'myrtice.langosh@example.com',
@@ -178,7 +185,8 @@ class UserControllerTest extends TestCase
     {
         $response = $this->get(route('users.excel.import.upload-form'));
 
-        $response->assertOk();
-        $response->assertViewIs('excel.upload');
+        $response
+            ->assertOk()
+            ->assertViewIs('excel.upload');
     }
 }
