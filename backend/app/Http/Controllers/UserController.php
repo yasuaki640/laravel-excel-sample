@@ -58,7 +58,7 @@ class UserController extends Controller
      * @return View|RedirectResponse
      * @throws Throwable
      */
-    public function queue(): View|RedirectResponse
+    public function queueExport(): View|RedirectResponse
     {
         try {
             DB::beginTransaction();
