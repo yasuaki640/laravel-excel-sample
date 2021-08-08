@@ -198,6 +198,8 @@ class UserControllerTest extends TestCase
     {
         $response = $this->post(route('users.excel.import.queue'));
 
-        $response->assertOk();
+        $response
+            ->assertOk()
+            ->assertViewHas('message');
     }
 }
