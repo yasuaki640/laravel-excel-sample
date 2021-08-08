@@ -144,7 +144,7 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * [Note] Do not use Excel::fake() to persist test data to DB
+     * [Note] Do not use Excel::fake() to persist test data on DB
      *
      * @return void
      */
