@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Exports\UsersExport;
+use App\Http\Requests\QueueImportPost;
 use App\Http\Requests\User\UploadPost;
 use App\Imports\UsersImport;
 use App\Jobs\NotifyUserOfCompletedExport;
@@ -107,7 +108,7 @@ class UserController extends Controller
     /**
      * @return View|RedirectResponse
      */
-    public function queueImport(): View|RedirectResponse
+    public function queueImport(QueueImportPost $request): View|RedirectResponse
     {
         try {
             $message = 'Successfully queued job of import an excel file';
