@@ -197,12 +197,10 @@ class UserControllerTest extends TestCase
     public function test_queueImport_success()
     {
         $response = $this->post(route('users.excel.import.queue'), [
-            'users' => new UploadedFile(
-                './tests/Feature/data/import_success.xlsx',
-                'import_success.xlsx',
+            'users' => UploadedFile::fake()->create(
+                'queue_import_success.xlsx',
+                100,
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                null,
-                true
             )
         ]);
 
