@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace App\Imports;
 
 use App\Models\User;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class UsersImport implements ToModel
+class UsersImport implements ToModel, WithChunkReading, ShouldQueue
 {
     /**
      * @param array $row
@@ -23,5 +25,10 @@ class UsersImport implements ToModel
             'sex' => $row[2],
             'password' => Hash::make($row[3]),
         ]);
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 }

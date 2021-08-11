@@ -196,8 +196,11 @@ class UserControllerTest extends TestCase
      */
     public function test_queueImport_success()
     {
+        Excel::fake();
+        Storage::fake(UserController::STORAGE_S3);
+
         $response = $this->post(route('users.excel.import.queue'), [
-            'users' => UploadedFile::fake()->create(
+            'users' => $file = UploadedFile::fake()->create(
                 'queue_import_success.xlsx',
                 100,
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -207,5 +210,7 @@ class UserControllerTest extends TestCase
         $response
             ->assertOk()
             ->assertViewHas('message');
+
+        Excel::assertQueued($file->getBasename());
     }
 }

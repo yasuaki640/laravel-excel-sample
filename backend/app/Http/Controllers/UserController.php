@@ -9,6 +9,7 @@ use App\Http\Requests\User\UploadPost;
 use App\Imports\UsersImport;
 use App\Jobs\NotifyUserOfCompletedExport;
 use App\Models\User;
+use App\Notifications\NotifyUserOfCompletedImport;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -111,6 +112,12 @@ class UserController extends Controller
     public function queueImport(QueueImportPost $request): View|RedirectResponse
     {
         try {
+            Excel::queueImport(new UsersImport, $request->file('users'))->chain([
+                new NotifyUserOfCompletedImport(
+                    request()->user() ?? User::factory()->create(),
+                    $request->file('users')->getClientOriginalName()
+                )
+            ]);
             $message = 'Successfully queued job of import an excel file';
             return \view('excel.import', compact('message'));
 
