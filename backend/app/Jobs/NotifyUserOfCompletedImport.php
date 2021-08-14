@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\User;
+use App\Notifications\ImportCompleted;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -42,6 +43,6 @@ class NotifyUserOfCompletedImport implements ShouldQueue
      */
     public function handle()
     {
-        //
+        $this->user->notify(new ImportCompleted($this->fileName));
     }
 }
