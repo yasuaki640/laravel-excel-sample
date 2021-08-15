@@ -200,18 +200,25 @@ class UserControllerTest extends TestCase
         Excel::fake();
         Storage::fake(UserController::STORAGE_S3);
 
-        $response = $this->post(route('users.excel.import.queue'), [
-            'users' => $file = UploadedFile::fake()->create(
-                'queue_import_success.xlsx',
-                100,
-                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            )
-        ]);
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->post(route('users.excel.import.queue'), [
+                'users' => $file = UploadedFile::fake()->create(
+                    'queue_import_success.xlsx',
+                    100,
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                )
+            ]);
 
         $response
             ->assertOk()
             ->assertViewHas('message');
 
         Excel::assertQueued($file->getBasename(), UserController::STORAGE_S3);
+
+        Excel::assertQueuedWithChain([
+            new NotifyUserOfCompletedImport($user, $file->getClientOriginalName())
+        ]);
     }
 }

@@ -123,6 +123,7 @@ class UserController extends Controller
                     $request->file('users')->getClientOriginalName()
                 )
             ]);
+
             $message = 'Successfully queued job of import an excel file';
             return \view('excel.import', compact('message'));
 
