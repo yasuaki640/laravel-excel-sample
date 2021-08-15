@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Exports\UsersExport;
 use App\Http\Controllers\UserController;
 use App\Jobs\NotifyUserOfCompletedExport;
+use App\Jobs\NotifyUserOfCompletedImport;
 use App\Models\User;
 use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -211,6 +212,6 @@ class UserControllerTest extends TestCase
             ->assertOk()
             ->assertViewHas('message');
 
-        Excel::assertQueued($file->getBasename());
+        Excel::assertQueued($file->getBasename(), UserController::STORAGE_S3);
     }
 }

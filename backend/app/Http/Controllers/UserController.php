@@ -113,7 +113,11 @@ class UserController extends Controller
     public function queueImport(QueueImportPost $request): View|RedirectResponse
     {
         try {
-            Excel::queueImport(new UsersImport, $request->file('users'))->chain([
+            Excel::queueImport(
+                new UsersImport,
+                $request->file('users'),
+                self::STORAGE_S3
+            )->chain([
                 new NotifyUserOfCompletedImport(
                     request()->user() ?? User::factory()->create(),
                     $request->file('users')->getClientOriginalName()
