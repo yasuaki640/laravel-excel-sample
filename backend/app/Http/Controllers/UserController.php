@@ -108,6 +108,7 @@ class UserController extends Controller
     }
 
     /**
+     * @param QueueImportPost $request
      * @return View|RedirectResponse
      */
     public function queueImport(QueueImportPost $request): View|RedirectResponse
