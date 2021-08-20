@@ -124,8 +124,6 @@ class UserController extends Controller
                 )
             ]);
 
-            \Storage::delete($file->getPath());
-
             $message = 'Successfully queued job of import an excel file';
             return \view('excel.import', compact('message'));
 
