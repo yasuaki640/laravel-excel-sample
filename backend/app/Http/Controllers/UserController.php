@@ -10,7 +10,6 @@ use App\Imports\UsersImport;
 use App\Jobs\NotifyUserOfCompletedExport;
 use App\Jobs\NotifyUserOfCompletedImport;
 use App\Models\User;
-use App\Notifications\ImportCompleted;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -116,7 +115,7 @@ class UserController extends Controller
         try {
             Excel::queueImport(
                 new UsersImport,
-                $request->file('users'),
+                $file = $request->file('users'),
                 self::STORAGE_S3
             )->chain([
                 new NotifyUserOfCompletedImport(
@@ -124,6 +123,8 @@ class UserController extends Controller
                     $request->file('users')->getClientOriginalName()
                 )
             ]);
+
+            \Storage::delete($file->getPath());
 
             $message = 'Successfully queued job of import an excel file';
             return \view('excel.import', compact('message'));
