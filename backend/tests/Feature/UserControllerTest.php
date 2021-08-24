@@ -151,6 +151,8 @@ class UserControllerTest extends TestCase
      */
     public function test_import_success()
     {
+        Storage::fake(UserController::STORAGE_S3);
+
         $response = $this->post(route('users.excel.import.upload'), [
             'users' => new UploadedFile(
                 './tests/Feature/data/import_success.xlsx',
