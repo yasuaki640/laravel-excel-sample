@@ -7,11 +7,15 @@ use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class UsersImport implements ToModel, WithChunkReading, ShouldQueue
+class UsersImport implements ShouldQueue, ToModel, WithChunkReading, WithBatchInserts
 {
+    use Importable;
+
     /**
      * @param array $row
      *
@@ -28,6 +32,11 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue
     }
 
     public function chunkSize(): int
+    {
+        return 1000;
+    }
+
+    public function batchSize(): int
     {
         return 1000;
     }
