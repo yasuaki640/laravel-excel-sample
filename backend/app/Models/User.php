@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -41,6 +40,10 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+
+    public const SEX_MALE = 0;
+
+    public const SEX_FEMALE = 1;
 
     /**
      * The attributes that are mass assignable.
