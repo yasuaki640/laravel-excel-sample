@@ -67,4 +67,66 @@ class UserRepostitoryTest extends TestCase
                 'sex' => User::SEX_FEMALE
             ]);
     }
+
+    public function test_同一のemailが存在すれば該当レコードをupdate_email変更()
+    {
+        $user = User::factory()->create([
+            'name' => 'Robin',
+            'email' => 'robin@robin.com',
+            'sex' => User::SEX_MALE
+        ]);
+
+        $updatedParams = [
+            'id' => $user->id,
+            'name' => 'Nico Robin',
+            'email' => 'nico@nico.com',
+            'sex' => User::SEX_FEMALE,
+            'password' => \Hash::make('password')
+        ];
+
+        User::upsert($updatedParams, ['id', 'email']);
+
+        $this
+            ->assertDatabaseMissing('users', [
+                'name' => 'Robin',
+                'email' => 'robin@robin.com',
+                'sex' => User::SEX_MALE
+            ])
+            ->assertDatabaseHas('users', [
+                'name' => 'Nico Robin',
+                'email' => 'nico@nico.com',
+                'sex' => User::SEX_FEMALE
+            ]);
+    }
+
+    public function test_同一のemailが存在すれば該当レコードをupdate_updateカラムを絞る()
+    {
+        $user = User::factory()->create([
+            'name' => 'Robin',
+            'email' => 'robin@robin.com',
+            'sex' => User::SEX_MALE
+        ]);
+
+        $updatedParams = [
+            'id' => $user->id,
+            'name' => 'Sanji',
+            'email' => 'sanji@sanji.com',
+            'sex' => User::SEX_MALE,
+            'password' => \Hash::make('password')
+        ];
+
+        User::upsert($updatedParams, ['id', 'email']);
+
+        $this
+            ->assertDatabaseMissing('users', [
+                'name' => 'Robin',
+                'email' => 'robin@robin.com',
+                'sex' => User::SEX_MALE
+            ])
+            ->assertDatabaseHas('users', [
+                'name' => 'sanji',
+                'email' => 'sanji@sanji.com',
+                'sex' => User::SEX_MALE
+            ]);
+    }
 }
