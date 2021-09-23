@@ -45,13 +45,15 @@ class UserRepostitoryTest extends TestCase
             'sex' => User::SEX_MALE
         ]);
 
-        User::upsert([
+        $updatedParams = [
             'id' => $user->id,
             'name' => 'Nico Robin',
             'email' => 'robin@robin.com',
             'sex' => User::SEX_FEMALE,
             'password' => \Hash::make('password')
-        ], ['id', 'email']);
+        ];
+
+        User::upsert($updatedParams, ['id', 'email']);
 
         $this
             ->assertDatabaseMissing('users', [
