@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,6 +14,28 @@ use Tests\TestCase;
 class UserRepostitoryTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_bulkInsertできる()
+    {
+        Carbon::setTestNow('2017-01-02 09:59:59');
+
+        $data = [
+            ['name' => 'Ruffy', 'email' => 'ruffy@ruffy.com', 'sex' => User::SEX_MALE, 'password' => \Hash::make('password')],
+            ['name' => 'Tonny', 'email' => 'tonny@tonny.com', 'sex' => User::SEX_MALE, 'password' => \Hash::make('password')],
+            ['name' => 'Robin', 'email' => 'robin@robin.com', 'sex' => User::SEX_FEMALE, 'password' => \Hash::make('password')],
+        ];
+
+        User::upsert($data, ['id', 'email'], ['email']);
+
+        $this
+            ->assertDatabaseHas('users',
+                ['name' => 'Ruffy', 'email' => 'ruffy@ruffy.com', 'sex' => User::SEX_MALE]
+            )->assertDatabaseHas('users',
+                ['name' => 'Tonny', 'email' => 'tonny@tonny.com', 'sex' => User::SEX_MALE],
+            )->assertDatabaseHas('users',
+                ['name' => 'Robin', 'email' => 'robin@robin.com', 'sex' => User::SEX_FEMALE],
+            );
+    }
 
     public function test_同一のemailが存在すれば該当レコードをupdate()
     {
