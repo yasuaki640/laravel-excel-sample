@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -25,7 +26,7 @@ class UserRepostitoryTest extends TestCase
             ['name' => 'Robin', 'email' => 'robin@robin.com', 'sex' => User::SEX_FEMALE, 'password' => \Hash::make('password')],
         ];
 
-        User::upsert($data, ['id', 'email'], ['email']);
+        User::upsert($data, ['id', 'email']);
 
         $this
             ->assertDatabaseHas('users',
@@ -35,6 +36,27 @@ class UserRepostitoryTest extends TestCase
             )->assertDatabaseHas('users',
                 ['name' => 'Robin', 'email' => 'robin@robin.com', 'sex' => User::SEX_FEMALE, 'created_at' => now(), 'updated_at' => now()]
             );
+    }
+
+    public function test_bulkInsertできる_timestampに値が入る()
+    {
+        Carbon::setTestNow('2017-01-02 09:59:59');
+
+        User::upsert([
+            'name' => 'Ruffy',
+            'email' => 'ruffy@ruffy.com',
+            'sex' => User::SEX_MALE,
+            'password' => \Hash::make('password')
+        ], ['id', 'email']);
+
+        $this
+            ->assertDatabaseHas('users', [
+                'name' => 'Ruffy',
+                'email' => 'ruffy@ruffy.com',
+                'sex' => User::SEX_MALE,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
     }
 
     public function test_同一のemailが存在すれば該当レコードをupdate()
@@ -128,5 +150,18 @@ class UserRepostitoryTest extends TestCase
                 'email' => 'robin@robin.com',
                 'sex' => User::SEX_FEMALE
             ]);
+    }
+
+    public function test_DBファサードのinsertはtimestampにnullが入る()
+    {
+        DB::table('users')->insert(['name' => 'Robin', 'email' => 'robin@robin.com', 'sex' => User::SEX_FEMALE, 'password' => \Hash::make('password')],);
+
+        $this->assertDatabaseHas('users', [
+            'name' => 'Robin',
+            'email' => 'robin@robin.com',
+            'sex' => User::SEX_FEMALE,
+            'created_at' => null,
+            'updated_at' => null
+        ]);
     }
 }
