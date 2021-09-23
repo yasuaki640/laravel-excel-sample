@@ -29,11 +29,11 @@ class UserRepostitoryTest extends TestCase
 
         $this
             ->assertDatabaseHas('users',
-                ['name' => 'Ruffy', 'email' => 'ruffy@ruffy.com', 'sex' => User::SEX_MALE]
+                ['name' => 'Ruffy', 'email' => 'ruffy@ruffy.com', 'sex' => User::SEX_MALE, 'created_at' => now(), 'updated_at' => now()]
             )->assertDatabaseHas('users',
-                ['name' => 'Tonny', 'email' => 'tonny@tonny.com', 'sex' => User::SEX_MALE],
+                ['name' => 'Tonny', 'email' => 'tonny@tonny.com', 'sex' => User::SEX_MALE, 'created_at' => now(), 'updated_at' => now()]
             )->assertDatabaseHas('users',
-                ['name' => 'Robin', 'email' => 'robin@robin.com', 'sex' => User::SEX_FEMALE],
+                ['name' => 'Robin', 'email' => 'robin@robin.com', 'sex' => User::SEX_FEMALE, 'created_at' => now(), 'updated_at' => now()]
             );
     }
 
@@ -104,7 +104,7 @@ class UserRepostitoryTest extends TestCase
         $user = User::factory()->create([
             'name' => 'Robin',
             'email' => 'robin@robin.com',
-            'sex' => User::SEX_MALE
+            'sex' => User::SEX_FEMALE
         ]);
 
         $updatedParams = [
@@ -115,18 +115,18 @@ class UserRepostitoryTest extends TestCase
             'password' => \Hash::make('password')
         ];
 
-        User::upsert($updatedParams, ['id', 'email']);
+        User::upsert($updatedParams, ['id', 'email'], ['name']);
 
         $this
             ->assertDatabaseMissing('users', [
                 'name' => 'Robin',
                 'email' => 'robin@robin.com',
-                'sex' => User::SEX_MALE
+                'sex' => User::SEX_FEMALE
             ])
             ->assertDatabaseHas('users', [
-                'name' => 'sanji',
-                'email' => 'sanji@sanji.com',
-                'sex' => User::SEX_MALE
+                'name' => 'Sanji',
+                'email' => 'robin@robin.com',
+                'sex' => User::SEX_FEMALE
             ]);
     }
 }
