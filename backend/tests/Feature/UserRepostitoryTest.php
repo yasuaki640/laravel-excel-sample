@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -148,12 +149,30 @@ class UserRepostitoryTest extends TestCase
             ->assertDatabaseHas('users', [
                 'name' => 'Sanji',
                 'email' => 'robin@robin.com',
-                'sex' => User::SEX_FEMALE
+                'sex' => User::SEX_FEMALE,
+                'updated_at' => now()
             ]);
     }
 
     public function test_DBファサードのinsertはtimestampにnullが入る()
     {
+        DB::table('users')->insert(['name' => 'Robin', 'email' => 'robin@robin.com', 'sex' => User::SEX_FEMALE, 'password' => \Hash::make('password')],);
+
+        $this->assertDatabaseHas('users', [
+            'name' => 'Robin',
+            'email' => 'robin@robin.com',
+            'sex' => User::SEX_FEMALE,
+            'created_at' => null,
+            'updated_at' => null
+        ]);
+    }
+
+    public function test_DBファサードのinsertはuniqueがかぶればエラーになる()
+    {
+        $this->expectException(QueryException::class);
+
+        User::factory()->create(['name' => 'Robin', 'email' => 'robin@robin.com', 'sex' => User::SEX_MALE]);
+
         DB::table('users')->insert(['name' => 'Robin', 'email' => 'robin@robin.com', 'sex' => User::SEX_FEMALE, 'password' => \Hash::make('password')],);
 
         $this->assertDatabaseHas('users', [
