@@ -3,19 +3,20 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Carbon\Carbon;
 use DB;
 use Illuminate\Database\QueryException;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 /**
  * Class UserRepostitoryTest
  * @package Tests\Feature
  */
-class UserRepostitoryTest extends TestCase
+class UserRepositoryTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
+
 
     public function test_bulkInsertできる()
     {
@@ -183,4 +184,60 @@ class UserRepostitoryTest extends TestCase
             'updated_at' => null
         ]);
     }
+//
+//
+//    public function test_ベンチマークinsert()
+//    {
+//        $count = 10 ** 4;
+//        $params = $this->getInsertParams($count);
+//
+//        $avg = 0.0;
+//        for ($i = 0; $i < 10; $i++) {
+//
+//            $start = hrtime(true);
+//            DB::table('users')->insert($params);
+//            $end = hrtime(true);
+//
+//            $avg += $end - $start;
+//
+//            User::truncate();
+//        }
+//
+//
+//        logger('DB::insert' . '処理時間:' . $avg / 10 ** 10 . '秒');
+//    }
+//
+//    public function test_ベンチマークupsert()
+//    {
+//        $count = 10 ** 4;
+//        $params = $this->getInsertParams($count);
+//
+//        $avg = 0.0;
+//        for ($i = 0; $i < 10; $i++) {
+//
+//            $start = hrtime(true);
+//            User::upsert($params, ['id', 'email']);
+//            $end = hrtime(true);
+//
+//            $avg += $end - $start;
+//
+//            User::truncate();
+//        }
+//
+//        logger('Eloquent::upsert' . '処理時間:' . $avg / 10 ** 10 . '秒');
+//    }
+//
+//    /**
+//     * @param int $count
+//     * @return array
+//     */
+//    public function getInsertParams(int $count = 10 ** 3): array
+//    {
+//        $params = [];
+//        for ($i = 0; $i < $count; $i++) {
+//            $params[] = ['name' => 'Robin' . $i, 'email' => "robin{$i}@robin.com", 'sex' => User::SEX_MALE, 'password' => 'pass']; //パフォーマンスの観点から平文入れてます、めんご
+//        }
+//
+//        return $params;
+//    }
 }
